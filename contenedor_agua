@@ -1,0 +1,47 @@
+#Posible solucion al ejercicio 46 de https://retosdeprogramacion.com/ejercicios/
+#Dado un array de números enteros positivos, donde cada uno
+# * representa unidades de bloques apilados, debemos calcular cuantas unidades
+# * de agua quedarán atrapadas entre ellos.
+# *
+# * - Ejemplo: Dado el array [4, 0, 3, 6, 1, 3].
+# *
+# *        ⏹
+# *        ⏹
+# *   ⏹💧💧⏹
+# *   ⏹💧⏹⏹💧⏹
+# *   ⏹💧⏹⏹💧⏹
+# *   ⏹💧⏹⏹⏹⏹
+# *
+# *   Representando bloque con ⏹︎ y agua con 💧, quedarán atrapadas 7 unidades
+#*   de agua. Suponemos que existe un suelo impermeable en la parte inferior
+# *   que retiene el agua.
+
+def contenedor_agua(array):
+    #Declaramos las variables
+    max_izquierda = []
+    max_derecha = []
+    max_actual_izquierda = 0
+    max_actual_derecha = 0
+    contenedor = []
+    
+    if len(array) < 3:
+        return "Este contendor no puede retener agua"
+    
+    #Calculamos el array de valores maximos por el lado izquierdo
+    for i in range(len(array)):
+        max_actual_izquierda = max(max_actual_izquierda, array[i])
+        max_izquierda.append(max_actual_izquierda)
+        
+    #Calculamos el array de valores maximos por el lado derecho
+    for i in range(len(array)-1,-1,-1):
+        max_actual_derecha = max(max_actual_derecha, array[i])
+        max_derecha.append(max_actual_derecha)
+    max_derecha = max_derecha[::-1] #damos la vuelta al array
+        
+    #Calculamos la capacidad de almacenaje de agua
+    for i in range(len(array)):
+        agua = min(max_izquierda[i], max_derecha[i]) - array[i]
+        contenedor.append(agua)
+        
+    return f"Quedan atrapadas {sum(contenedor)} unidades de agua"
+        
